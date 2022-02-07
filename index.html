@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet" />
+    <script defer src="app.js"></script>
+    <title>Sorting Visualizer</title>
+  </head>
+
+  <body>
+    <header>
+      <div id="menuContainer">
+        <div class="radio-container">
+          <input class="radio-btn" value="bubbleSort" id="bubbleSort" type="radio" name="radio" />
+          <label for="bubbleSort" class="radio-label btn">Bubble Sort</label>
+
+          <input
+            class="radio-btn"
+            value="selectionSort"
+            id="selectionSort"
+            type="radio"
+            name="radio"
+          />
+          <label for="selectionSort" class="radio-label btn">Selection Sort</label>
+
+          <input
+            class="radio-btn"
+            value="heapSort"
+            id="heapSort"
+            type="radio"
+            name="radio"
+            checked
+          />
+          <label for="heapSort" class="radio-label btn">Heap Sort</label>
+
+          <input class="radio-btn" value="quickSort" id="quickSort" type="radio" name="radio" />
+          <label for="quickSort" class="radio-label btn">Quick Sort</label>
+        </div>
+
+        <div class="main-buttons-container">
+          <button class="cta-btn btn" id="sortButton">Sort!</button>
+          <button class="cta-btn btn" id="newArray" onclick="createBars()">New Array</button>
+        </div>
+      </div>
+
+      <p id="displayRange">77</p>
+      <input type="range" min="4" max="150" id="range" style="width: 100%" />
+    </header>
+
+    <main>
+      <div id="barContainer"></div>
+    </main>
+  </body>
+</html>
