@@ -73,6 +73,9 @@ const sleep = (ms) => {
 };
 
 const swap = (array, indexA, indexB) => {
+  barsArray[indexA].style.height = `${array[indexB]}%`;
+  barsArray[indexB].style.height = `${array[indexA]}%`;
+
   let temp = array[indexA];
   array[indexA] = array[indexB];
   array[indexB] = temp;
@@ -84,7 +87,7 @@ const swap = (array, indexA, indexB) => {
 // ++++++ BUBBLE SORT ++++++
 async function bubbleSort(array) {
   let n = array.length;
-  let swapped = true;
+  let swapped;
   for (let j = n; j > 0; j--) {
     swapped = false;
 
@@ -94,9 +97,6 @@ async function bubbleSort(array) {
       barsArray[i].style.backgroundColor = "var(--snd-color)";
 
       if (array[i] > array[i + 1]) {
-        barsArray[i].style.height = `${array[i + 1]}%`;
-        barsArray[i + 1].style.height = `${array[i]}%`;
-
         swap(array, i, i + 1);
         swapped = true;
       }
@@ -120,14 +120,12 @@ async function selectionSort(array) {
     }
 
     if (minIndex != i) {
-      barsArray[minIndex].style.backgroundColor = "brown";
       barsArray[i].style.backgroundColor = "var(--accent-color)";
-      await sleep(150);
+      barsArray[minIndex].style.backgroundColor = "brown";
+      await sleep(50);
       barsArray[i].style.backgroundColor = "var(--snd-color)";
       barsArray[minIndex].style.backgroundColor = "var(--snd-color)";
 
-      barsArray[i].style.height = `${array[minIndex]}%`;
-      barsArray[minIndex].style.height = `${array[i]}%`;
       swap(array, i, minIndex);
     }
   }
@@ -141,56 +139,99 @@ async function heapSort(array) {
   // find the last parent node that has at least one child
   for (let j = Math.floor(n / 2) - 1; j >= 0; j--) {
     barsArray[j].style.backgroundColor = "green";
-    await sleep(10);
+    await sleep(50);
     barsArray[j].style.backgroundColor = "var(--snd-color)";
 
-    heapify(array, n, j);
+    maxHeapify(array, n, j);
   }
 
   for (let i = n - 1; i >= 0; i--) {
     barsArray[i].style.backgroundColor = "dodgerblue";
     await sleep(50);
     barsArray[i].style.backgroundColor = "var(--snd-color)";
-    barsArray[i].style.height = `${array[0]}%`;
-    barsArray[0].style.height = `${array[i]}%`;
 
     swap(array, 0, i);
-    heapify(array, i, 0);
+    maxHeapify(array, i, 0);
   }
   toggleInputs(false);
 }
 
-async function heapify(array, n, root) {
-  let largest = root;
-  let l = root * 2 + 1;
-  let r = root * 2 + 2;
+async function maxHeapify(array, n, node) {
+  let largest = node;
+  let l = node * 2 + 1;
+  let r = node * 2 + 2;
 
-  // If left child is larger than root
+  // If left child is larger than node
   if (l < n && array[l] > array[largest]) {
     largest = l;
   }
 
-  // If right child is larger than root and left
+  // If right child is larger than node and left
   if (r < n && array[r] > array[largest]) {
     largest = r;
   }
 
-  // swap if largest is NOT same as root
-  if (largest != root) {
-    barsArray[root].style.height = `${array[largest]}%`;
-    barsArray[largest].style.height = `${array[root]}%`;
-    swap(array, root, largest);
+  // swap if largest is NOT same as node
+  if (largest != node) {
+    swap(array, node, largest);
 
-    // Recursively heapify sub-tree
-    heapify(array, n, largest);
+    // Recursively maxHeapify sub-tree
+    maxHeapify(array, n, largest);
   }
 }
 
 // ++++++ QUICK SORT ++++++
-const quickSort = () => {
-  console.log("quick was called");
-  toggleInputs(false);
+const quickSort = (array) => {
+  partition(array, 0, array.length - 1);
 };
+
+async function partition(array, start, end) {
+  if (start >= end) {
+    return;
+  }
+
+  let pivot = start;
+  let left = start + 1;
+  let right = end;
+
+  while (left <= right) {
+    barsArray[pivot].style.backgroundColor = "brown";
+    barsArray[left].style.backgroundColor = "blue";
+    barsArray[right].style.backgroundColor = "green";
+
+    await sleep(1);
+
+    if (array[left] > array[pivot] && array[right] < array[pivot]) {
+      swap(array, left, right);
+    }
+
+    await sleep(1);
+
+    barsArray[left].style.backgroundColor = "var(--snd-color)";
+    barsArray[right].style.backgroundColor = "var(--snd-color)";
+
+    if (array[left] <= array[pivot]) {
+      left++;
+    }
+
+    if (array[right] >= array[pivot]) {
+      right--;
+    }
+
+    barsArray[pivot].style.backgroundColor = "var(--snd-color)";
+  }
+
+  await sleep(1);
+
+  if (pivot !== right) {
+    swap(array, pivot, right);
+  }
+
+  partition(array, right + 1, end);
+  partition(array, start, right - 1);
+
+  toggleInputs(false);
+}
 
 // ++++++ SORT ++++++
 const sort = (sortingAlgorithm) => {
@@ -207,7 +248,6 @@ const sort = (sortingAlgorithm) => {
 };
 
 // Input Handlers ---------------
-
 range.addEventListener("input", () => {
   displayRange();
   createBars();

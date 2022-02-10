@@ -1,7 +1,7 @@
 :root {
   --bg-color: #000000;
   --accent-color: #f0a500;
-  --snd-color: #414141;
+  --snd-color: white;
   --trd-color: #525252;
 
   --font-color: #f0a500;
@@ -34,7 +34,7 @@ body {
   border-color: #000;
   border-left-width: 1px;
   border-right-width: 1px;
-  border-style: solid;
+  border-style: dotted;
   background-color: var(--snd-color);
 }
 
@@ -87,6 +87,17 @@ button {
   color: var(--font-color);
   background-color: var(--bg-color);
   font-size: 1.5em;
+}
+
+#sortButton {
+  border-top: none;
+  border-left: none;
+  box-shadow: inset 4px 4px 2px #ffd67a;
+  background-color: var(--accent-color);
+  color: var(--bg-color);
+}
+#sortButton:active {
+  border: none;
 }
 
 /* ---- ---- ---- ----  */
