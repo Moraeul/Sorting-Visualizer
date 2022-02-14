@@ -34,7 +34,7 @@ body {
   border-color: #000;
   border-left-width: 1px;
   border-right-width: 1px;
-  border-style: dotted;
+  border-style: solid;
   background-color: var(--snd-color);
 }
 

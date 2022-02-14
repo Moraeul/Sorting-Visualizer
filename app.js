@@ -101,7 +101,7 @@ async function bubbleSort(array) {
         swapped = true;
       }
     }
-    if (!swapped) break;
+    barsArray[j - 1].style.backgroundColor = "red";
   }
   toggleInputs(false);
 }
@@ -120,15 +120,15 @@ async function selectionSort(array) {
     }
 
     if (minIndex != i) {
-      barsArray[i].style.backgroundColor = "var(--accent-color)";
       barsArray[minIndex].style.backgroundColor = "brown";
       await sleep(50);
-      barsArray[i].style.backgroundColor = "var(--snd-color)";
       barsArray[minIndex].style.backgroundColor = "var(--snd-color)";
 
       swap(array, i, minIndex);
     }
+    barsArray[i].style.backgroundColor = "var(--accent-color)";
   }
+  barsArray[n - 1].style.backgroundColor = "var(--accent-color)";
   toggleInputs(false);
 }
 
@@ -146,9 +146,8 @@ async function heapSort(array) {
   }
 
   for (let i = n - 1; i >= 0; i--) {
-    barsArray[i].style.backgroundColor = "dodgerblue";
     await sleep(50);
-    barsArray[i].style.backgroundColor = "var(--snd-color)";
+    barsArray[i].style.backgroundColor = "dodgerblue";
 
     swap(array, 0, i);
     maxHeapify(array, i, 0);
@@ -184,9 +183,14 @@ async function maxHeapify(array, n, node) {
 const quickSort = (array) => {
   partition(array, 0, array.length - 1);
 };
-
+let countPartitions = 0;
 async function partition(array, start, end) {
+  countPartitions++;
   if (start >= end) {
+    if (barsArray[start]) {
+      barsArray[start].style.backgroundColor = "gold";
+    }
+    countPartitions--;
     return;
   }
 
@@ -195,7 +199,7 @@ async function partition(array, start, end) {
   let right = end;
 
   while (left <= right) {
-    barsArray[pivot].style.backgroundColor = "brown";
+    barsArray[pivot].style.backgroundColor = "red";
     barsArray[left].style.backgroundColor = "blue";
     barsArray[right].style.backgroundColor = "green";
 
@@ -225,12 +229,16 @@ async function partition(array, start, end) {
 
   if (pivot !== right) {
     swap(array, pivot, right);
+    barsArray[right].style.backgroundColor = "gold";
   }
 
   partition(array, right + 1, end);
   partition(array, start, right - 1);
 
-  toggleInputs(false);
+  countPartitions--;
+  if (countPartitions === 0) {
+    toggleInputs(false);
+  }
 }
 
 // ++++++ SORT ++++++
