@@ -48,12 +48,19 @@
         </div>
       </div>
 
-      <p id="displayRange">10</p>
-      <input type="range" min="4" max="150" step="2" value="10" id="range" style="width: 100%" />
+      <p id="displayRange">260</p>
+      <input type="range" min="20" max="500" value="260" step="20" id="range" style="width: 100%" />
     </header>
 
     <main>
       <div id="barContainer"></div>
     </main>
+    <footer>
+      <div class="speed-input-container">
+        <label for="speedButton">speed</label>
+        <input style="direction: rtl" type="range" min="10" max="1000" value="1" id="speedButton" />
+      </div>
+      <button class="btn" id="reloadButton" onclick="window.location.reload()">Reset</button>
+    </footer>
   </body>
 </html>

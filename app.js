@@ -4,12 +4,18 @@ const rangeDisplay = document.getElementById("displayRange");
 const barsContainer = document.getElementById("barContainer");
 const barsArray = document.getElementsByClassName("bar");
 const radioButtonArray = document.getElementsByName("radio");
+const speedButton = document.getElementById("speedButton");
 
 const sortButton = document.getElementById("sortButton");
 const newArray = document.getElementById("newArray");
 
 const displayRange = () => {
   rangeDisplay.innerText = range.value;
+};
+
+let speed = 1;
+const getSpeed = () => {
+  speed = speedButton.value;
 };
 
 // random number between 2 int
@@ -34,7 +40,9 @@ const getCheckedRadio = () => {
 };
 
 const toggleInputs = (bool) => {
-  [range, sortButton, newArray].forEach((input) => input.toggleAttribute("disabled", bool));
+  [range, sortButton, newArray, speedButton].forEach((input) =>
+    input.toggleAttribute("disabled", bool)
+  );
 
   // bool = true  { adds "disabled" attribute to html element }
   // bool = false { removes "disabled" attribute }
@@ -43,14 +51,14 @@ const toggleInputs = (bool) => {
 const changeWidth = () => {
   const width =
     range.value <= 15
-      ? 40
+      ? 70
       : range.value <= 30
       ? 25
       : range.value <= 60
       ? 15
       : range.value <= 120
       ? 10
-      : 8;
+      : 3;
   return width;
 };
 
@@ -65,6 +73,12 @@ const createBars = () => {
   }
 };
 createBars();
+
+const resetColor = () => {
+  for (let x = 0; x < barsArray.length; x++) {
+    barsArray[x].style.backgroundColor = "var(--snd-color)";
+  }
+};
 
 // ++++++++++++++++++++++++++++
 
@@ -92,8 +106,8 @@ async function bubbleSort(array) {
     swapped = false;
 
     for (let i = 0; i < j; i++) {
-      barsArray[i].style.backgroundColor = "var(--accent-color)";
-      await sleep(1);
+      barsArray[i].style.backgroundColor = "var(--current-color)";
+      await sleep(speed);
       barsArray[i].style.backgroundColor = "var(--snd-color)";
 
       if (array[i] > array[i + 1]) {
@@ -101,8 +115,9 @@ async function bubbleSort(array) {
         swapped = true;
       }
     }
-    barsArray[j - 1].style.backgroundColor = "red";
+    barsArray[j - 1].style.backgroundColor = "var(--sorted-color)";
   }
+  resetColor();
   toggleInputs(false);
 }
 
@@ -120,15 +135,18 @@ async function selectionSort(array) {
     }
 
     if (minIndex != i) {
-      barsArray[minIndex].style.backgroundColor = "brown";
-      await sleep(50);
+      barsArray[i].style.backgroundColor = "var(--current-color)";
+      barsArray[minIndex].style.backgroundColor = "var(--current-color)";
+      await sleep(speed);
       barsArray[minIndex].style.backgroundColor = "var(--snd-color)";
+      barsArray[i].style.backgroundColor = "var(--snd-color)";
 
       swap(array, i, minIndex);
     }
-    barsArray[i].style.backgroundColor = "var(--accent-color)";
+    barsArray[i].style.backgroundColor = "var(--sorted-color)";
   }
-  barsArray[n - 1].style.backgroundColor = "var(--accent-color)";
+  barsArray[n - 1].style.backgroundColor = "var(--sorted-color)";
+  resetColor();
   toggleInputs(false);
 }
 
@@ -138,20 +156,21 @@ async function heapSort(array) {
 
   // find the last parent node that has at least one child
   for (let j = Math.floor(n / 2) - 1; j >= 0; j--) {
-    barsArray[j].style.backgroundColor = "green";
-    await sleep(50);
+    barsArray[j].style.backgroundColor = "var(--current-color)";
+    await sleep(speed);
     barsArray[j].style.backgroundColor = "var(--snd-color)";
 
     maxHeapify(array, n, j);
   }
 
   for (let i = n - 1; i >= 0; i--) {
-    await sleep(50);
-    barsArray[i].style.backgroundColor = "dodgerblue";
+    await sleep(speed);
+    barsArray[i].style.backgroundColor = "var(--sorted-color)";
 
     swap(array, 0, i);
     maxHeapify(array, i, 0);
   }
+  resetColor();
   toggleInputs(false);
 }
 
@@ -188,7 +207,7 @@ async function partition(array, start, end) {
   countPartitions++;
   if (start >= end) {
     if (barsArray[start]) {
-      barsArray[start].style.backgroundColor = "gold";
+      barsArray[start].style.backgroundColor = "var(--sorted-color)";
     }
     countPartitions--;
     return;
@@ -199,17 +218,17 @@ async function partition(array, start, end) {
   let right = end;
 
   while (left <= right) {
-    barsArray[pivot].style.backgroundColor = "red";
-    barsArray[left].style.backgroundColor = "blue";
-    barsArray[right].style.backgroundColor = "green";
+    barsArray[pivot].style.backgroundColor = "var(--accent-color)";
+    barsArray[left].style.backgroundColor = "var(--current-color)";
+    barsArray[right].style.backgroundColor = "var(--current-snd-color)";
 
-    await sleep(1);
+    await sleep(speed);
 
     if (array[left] > array[pivot] && array[right] < array[pivot]) {
       swap(array, left, right);
     }
 
-    await sleep(1);
+    await sleep(speed);
 
     barsArray[left].style.backgroundColor = "var(--snd-color)";
     barsArray[right].style.backgroundColor = "var(--snd-color)";
@@ -225,11 +244,11 @@ async function partition(array, start, end) {
     barsArray[pivot].style.backgroundColor = "var(--snd-color)";
   }
 
-  await sleep(1);
+  await sleep(speed);
 
   if (pivot !== right) {
     swap(array, pivot, right);
-    barsArray[right].style.backgroundColor = "gold";
+    barsArray[right].style.backgroundColor = "var(--sorted-color)";
   }
 
   partition(array, right + 1, end);
@@ -237,6 +256,7 @@ async function partition(array, start, end) {
 
   countPartitions--;
   if (countPartitions === 0) {
+    resetColor();
     toggleInputs(false);
   }
 }
@@ -256,17 +276,16 @@ const sort = (sortingAlgorithm) => {
 };
 
 // Input Handlers ---------------
-range.addEventListener("input", () => {
+range.addEventListener("mouseup", () => {
   displayRange();
   createBars();
+});
+
+speedButton.addEventListener("mouseup", () => {
+  getSpeed();
 });
 
 sortButton.addEventListener("click", () => {
   getCheckedRadio();
   sort(selectedSortingAlgorithm);
 });
-
-// make sorted bar another color
-// make universal animation function
-// make speed input
-// add description to each alg at the bottom

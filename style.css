@@ -1,12 +1,14 @@
 :root {
   --bg-color: #000000;
-  --accent-color: #f0a500;
+  --accent-color: dodgerblue;
   --snd-color: white;
   --trd-color: #525252;
-
-  --font-color: #f0a500;
+  --current-color: #a52a2a;
+  --current-snd-color: #5ad5d5;
+  --sorted-color: hsla(210, 100%, 56%, 0.5);
+  --font-color: dodgerblue;
 }
-
+/* #FFFFFF,#000000,#A5FFC9,#A5C9FF*/
 * {
   margin: 0;
   padding: 0;
@@ -31,10 +33,7 @@ body {
 }
 
 .bar {
-  border-color: #000;
-  border-left-width: 1px;
-  border-right-width: 1px;
-  border-style: solid;
+  width: 3px;
   background-color: var(--snd-color);
 }
 
@@ -50,10 +49,6 @@ body {
   width: 10em;
   margin-left: 1em;
 }
-.cta-btn:first-child {
-  background-color: var(--bg-color);
-  color: var(--accent-color);
-}
 
 button {
   font-family: inherit;
@@ -65,39 +60,68 @@ button {
   background-color: var(--bg-color);
 }
 
+.speed-input-container {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-direction: column;
+}
+
 .radio-btn {
   display: none;
 }
 
 .radio-label {
-  opacity: 0.4;
+  opacity: 1;
   margin-right: 1em;
-  border: 1px solid var(--snd-color);
+  border-top-color: rgb(118, 118, 118);
+  border-left-color: rgb(118, 118, 118);
+  border-bottom-color: rgb(59, 59, 59);
+  border-right-color: rgb(59, 59, 59);
+  border-width: 2px;
+  border-style: solid;
 }
 
 .radio-btn:checked + .radio-label {
   opacity: 1;
-  color: var(--accent-color);
+  font-weight: bold;
+  color: var(--bg-color);
+  background-color: var(--accent-color);
   border-color: var(--trd-color);
 }
 
 .btn {
   cursor: pointer;
   padding: 0.5em;
+  border-radius: 0.5em;
   color: var(--font-color);
   background-color: var(--bg-color);
   font-size: 1.5em;
 }
 
 #sortButton {
-  border-top: none;
-  border-left: none;
-  box-shadow: inset 4px 4px 2px #ffd67a;
   background-color: var(--accent-color);
   color: var(--bg-color);
+  border-top-color: rgb(220, 220, 220);
+  border-left-color: rgb(220, 220, 220);
+  border-bottom-color: rgb(59, 59, 59);
+  border-right-color: rgb(59, 59, 59);
+  border-width: 2px;
+  border-style: solid;
 }
 #sortButton:active {
-  border: none;
+  border-bottom-color: rgb(220, 220, 220);
+  border-right-color: rgb(220, 220, 220);
+  border-top-color: rgb(59, 59, 59);
+  border-left-color: rgb(59, 59, 59);
+}
+
+footer {
+  width: 100%;
+  display: flex;
+  gap: 40%;
+  justify-content: flex-end;
+  margin-top: 0.5em;
 }
 
 /* ---- ---- ---- ----  */
